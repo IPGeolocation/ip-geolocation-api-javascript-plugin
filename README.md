@@ -67,7 +67,7 @@ To access this service, add the following Javascript call (usually within the <h
 ```html
 <script
   language="JavaScript"
-  src="http://www.geoplugin.net/javascript.gp"
+  src="https://static.ipgeolocation.io/ipgeolocation-api-plugin.js"
   type="text/javascript"
 ></script>
 ```
