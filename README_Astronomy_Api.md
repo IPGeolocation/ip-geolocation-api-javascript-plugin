@@ -294,4 +294,28 @@ You can also get Astronomical information for a specific date. For this you have
 
 Inspect the `status` field in the response to detect any errors. A missing `status` field typically indicates a successful request, while its presence signals an issue. More information about error codes and messages can be found in the [error codes section](https://ipgeolocation.io/ip-location-api.html#error-codes) of our documentation.
 
+```html 
+<script>
+        const astronomyAPI = new AstronomyAPI({
+            apiKey: "YOUR_API_KEY",
+            location:"New York, US"
+            date:"2024-11-04"
+        });
+
+        const resp = await astronomyAPI.getAstronomy();
+
+      //sample error response
+  {
+    error_message: "'latitude' (91) or 'longitude' (-190) is not valid. 'latitude' must be between -90.0 and +90.0 and 'longitude' must be between -180.0 and +180.0."
+    error_status: 400
+  }
+
+  if (!resp.error_message) {
+      console.log(resp);
+  } else {
+      console.log("Something went wrong while fetching data", resp);
+  }
+</script>
+```
+
 For detailed API documentation and additional features, refer to the official [IPGeolocation API documentation](https://ipgeolocation.io/documentation.html).

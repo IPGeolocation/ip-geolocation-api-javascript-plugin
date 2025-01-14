@@ -281,7 +281,7 @@ you can also filter the API response by specifying the names of fields (except I
         apiKey: "YOUR_API_KEY",
         excludes: "continent_code,currency,time_zone",
     });
-
+    const resp = await ipGeoAPI.getGeolocation();
     //sample response
     {
         "ip": "8.8.8.8",
@@ -317,7 +317,7 @@ you can also filter the API response by specifying the names of fields (except I
         fields: "geo",
         excludes: "continent_code,continent_name",
     });
-
+    const resp = await ipGeoAPI.getGeolocation();
     //sample response
 
     {
@@ -348,7 +348,7 @@ IP Geolocation API also provides `IP-Security` information on all the `paid subs
         excludes: "continent_code,continent_name",
         include: "security"
     });
-
+    const resp = await ipGeoAPI.getGeolocation();
     //sample response
     {
         "ip": "8.8.8.8",
@@ -391,7 +391,7 @@ IPGeolocation API also provide `hostname` lookup for an IP address on all the `p
         excludes: "continent_code,continent_name",
         include: "liveHostname"
     });
-
+    const resp = await ipGeoAPI.getGeolocation();
     //sample response
     {
         "ip": "8.8.8.8",
@@ -424,7 +424,7 @@ IP Geolocation API also provides `User-Agent` information on all the `paid subsc
         excludes: "continent_code,continent_name",
         include: "useragent"
     });
-
+    const resp = await ipGeoAPI.getGeolocation();
     //sample response
     {
         "ip": "8.8.8.8",
@@ -471,6 +471,28 @@ IP Geolocation API also provides `User-Agent` information on all the `paid subsc
 ```
 ## Error Handling
 
-Inspect the `status` field in the response to detect any errors. A missing `status` field typically indicates a successful request, while its presence signals an issue. More information about error codes and messages can be found in the [error codes section](https://ipgeolocation.io/ip-location-api.html#error-codes) of our documentation.
+Inspect the `status` field in the response to detect any errors. A missing `status` field typically indicates a successful request, while its presence signals an issue. For example, if you are using developer plan and are trying to query the security information for an ipAddress, you will encounter an error as shown below:
 
-For detailed API documentation and additional features, refer to the official [IPGeolocation API documentation](https://ipgeolocation.io/documentation.html).
+```html
+<script>
+    const ipGeoAPI = new IPGeolocationAPI({
+        apiKey: "YOUR_API_KEY",
+        includeSecurity : true,
+        });
+
+    const resp = await ipGeoAPI.getGeolocation();
+      //sample error response
+  {
+    error_message: "IP-hostname lookup, IP-security lookup and user-agent parsing are not supported on your free subscription. These features are available to all paid subscriptions only"
+    error_status: 401
+  }
+
+  if (!resp.error_message) {
+      console.log(resp);
+  } else {
+      console.log("Something went wrong while fetching data", resp);
+  }
+</script>
+```
+
+More information about error codes and messages can be found in the [error codes section](https://ipgeolocation.io/ip-location-api.html#error-codes) of our documentation. For detailed API documentation and additional features, refer to the official [IPGeolocation API documentation](https://ipgeolocation.io/documentation.html).
