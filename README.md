@@ -40,7 +40,7 @@ To instantiate the `IPGeolocationAPI`, you can use the following configuration o
 
 - **excludes** (`optional: string`): Comma-separated list of fields to exclude from the response.
 
-- **lang** (`optional: string`): Language of the response. The default is `en`. Supported languages include: `ru`, `de`, `ja`, `fr`, `cn`, `es`, `cs`, `it`, `fa`, `ko`. Translations are only supported on paid accounts. 
+- **lang** (`optional: string`): Language of the response. The default is `en`. Supported languages include: `ru`, `de`, `ja`, `fr`, `cn`, `es`, `cs`, `it`, `fa`, `ko`, `pt`. Translations are only supported on paid accounts.
 
 - **includeHostname** (`optional:  boolean`): Includes hostname lookup from the IPGeolocation's IP-Hostname database (Paid feature).
 
@@ -52,27 +52,32 @@ To instantiate the `IPGeolocationAPI`, you can use the following configuration o
 
 - **includeUserAgent** (`optional:  boolean`): Includes information about the client’s user agent (Paid feature).
 
+- **includeTimeZone** (`optional:  boolean`): Includes information about the client’s IP time zone (Paid feature).
+
+- **includeDMACode** (`optional:  boolean`): Includes information about the client’s IP DMA Code (Paid feature).
+
 - **saveToSessionStorage** (`optional:  boolean`): Saves geolocation data to session storage for temporary use.
 
 - **saveToLocalStorage** (`optional:  boolean`): Saves geolocation data to local storage for long-term use.
 
 - **ttl** (`optional`): Valid for only saving data to local storage. Time-to-live for data stored in local storage, specified in hours (e.g., `3` for 3 hours). The default is 24 hours.
 
-Please note that only one of these three options (`includeHostname`, `includeLiveHostname`, or `includeHostnameFallbackLive`) should be passed at a time. Depending on your requirements, you can use either or both storage options to `cache` the response.
+Please note that only one of these three options (`includeHostname`, `includeLiveHostname`, or `includeHostnameFallbackLive`) should be passed at a time. Depending on your requirements, you can use storage options to `cache` the response.
 
 ## Example Code
 
-To access this service, add the following Javascript call (usually within the <head> block of your pages). Note: this service will only work when embedded in web pages - no server-side calls will work.
+To access this service, add the following Javascript call (usually within the `<head>` block of your pages). Note: this service will only work when embedded in web pages - no server-side calls will work.
 
 ```html
 <script
   language="JavaScript"
-  src="https://static.ipgeolocation.io/ipgeolocation-api-plugin.js"
+  src="https://static.ipgeolocation.io/ipgeolocation-api-plugin.v1.0.0.js"
   type="text/javascript"
 ></script>
 ```
 
 ### Example 1: No field is passed or only apiKey is passed
+
 ```javascript
 <script>
     const ipGeoAPI = new IPGeolocationAPI({
@@ -82,69 +87,7 @@ To access this service, add the following Javascript call (usually within the <h
     // fetch the geolocation infromation from the API and use it as you want
     const resp = await ipGeoAPI.getGeolocation();
 
-    // sample response
-    {
-        "ip": "8.8.8.8",
-        "hostname": "dns.google",
-        "continent_code": "NA",
-        "continent_name": "North America",
-        "country_code2": "US",
-        "country_code3": "USA",
-        "country_name": "United States",
-        "country_name_official": "United States of America",
-        "country_capital": "Washington, D.C.",
-        "state_prov": "California",
-        "state_code": "US-CA",
-        "district": "Santa Clara",
-        "city": "Mountain View",
-        "zipcode": "94043-1351",
-        "latitude": "37.42240",
-        "longitude": "-122.08421",
-        "is_eu": false,
-        "calling_code": "+1",
-        "country_tld": ".us",
-        "languages": "en-US,es-US,haw,fr",
-        "country_flag": "https://ipgeolocation.io/static/flags/us_64.png",
-        "geoname_id": "6301403",
-        "isp": "Google LLC",
-        "connection_type": "",
-        "organization": "Google LLC",
-        "country_emoji": "🇺🇸",
-        "asn": "AS15169",
-        "currency": {
-            "code": "USD",
-            "name": "US Dollar",
-            "symbol": "$"
-        },
-        "time_zone": {
-            "name": "America/Los_Angeles",
-            "offset": -8,
-            "offset_with_dst": -7,
-            "current_time": "2024-09-19 00:19:04.376-0700",
-            "current_time_unix": 1726730344.376,
-            "is_dst": true,
-            "dst_savings": 1,
-            "dst_exists": true,
-            "dst_start": {
-            "utc_time": "2024-03-10 TIME 10",
-            "duration": "+1H",
-            "gap": true,
-            "dateTimeAfter": "2024-03-10 TIME 03",
-            "dateTimeBefore": "2024-03-10 TIME 02",
-            "overlap": false
-            },
-            "dst_end": {
-            "utc_time": "2024-11-03 TIME 09",
-            "duration": "-1H",
-            "gap": false,
-            "dateTimeAfter": "2024-11-03 TIME 01",
-            "dateTimeBefore": "2024-11-03 TIME 02",
-            "overlap": true
-            }
-        }
-    }
-
-    // if there is some error while fetching the response from the API, following response will be returned, so hndle it accordingly
+     // if there is some error while fetching the response from the API, following response will be returned, so hndle it accordingly
 
     {
         error_status: error_status_code,
@@ -157,78 +100,17 @@ To access this service, add the following Javascript call (usually within the <h
         console.log("Something went wrong while fetching data", resp);
     }
 
-
-
-</scritp>
-```
-
-### Example  2: Get Only the required fields
-You can filter the API response by specifying names of the fields that you want instead of getting the full response. Here are a few examples to get only the required fields:
-``` javascript
-<script>
-
-// to get the geolocation information only
-
-    const ipGeoAPI = new IPGeolocationAPI({
-        apiKey: "YOUR_API_KEY",
-        fields: "geo",
-    });
-    const resp = await ipGeoAPI.getGeolocation();
-
-    //sample response
+    // sample response (Free API Subscription)
     {
         "ip": "8.8.8.8",
-        "continent_code": "NA",
-        "continent_name": "North America",
-        "country_code2": "US",
-        "country_code3": "USA",
-        "country_name": "United States",
-        "country_name_official": "United States of America",
-        "state_prov": "California",
-        "state_code": "US-CA",
-        "district": "Santa Clara",
-        "city": "Mountain View",
-        "zipcode": "94043-1351",
-        "latitude": "37.42240",
-        "longitude": "-122.08421",
-        "is_eu": false
-    }
-
-
-    // you can also specify multiple fields separated by comma, for example to get the country and city information only
-
-        const ipGeoAPI = new IPGeolocationAPI({
-        apiKey: "YOUR_API_KEY",
-        fields: "country_name, city",
-    });
-    const resp = await ipGeoAPI.getGeolocation();
-
-    // sample response
-    {
-        "ip": "8.8.8.8",
-        "country_name": "United States",
-        "city": "Mountain View"
-    }
-    
-    // to get geolocation, currency and timzone information
-
-        const ipGeoAPI = new IPGeolocationAPI({
-        apiKey: "YOUR_API_KEY",
-        fields: "geo,currency,time_zone",
-    });
-
-    // fetch the geolocation infromation from the API and use it as you want
-    const resp = await ipGeoAPI.getGeolocation();
-
-    // sample response
-        {
-            "ip": "8.8.8.8",
+        "location": {
             "continent_code": "NA",
             "continent_name": "North America",
             "country_code2": "US",
             "country_code3": "USA",
             "country_name": "United States",
             "country_name_official": "United States of America",
+            "country_capital": "Washington, D.C.",
             "state_prov": "California",
             "state_code": "US-CA",
             "district": "Santa Clara",
@@ -236,8 +118,62 @@ You can filter the API response by specifying names of the fields that you want 
             "zipcode": "94043-1351",
             "latitude": "37.42240",
             "longitude": "-122.08421",
-            "is_eu": false
+            "is_eu": false,
+            "country_flag": "https://ipgeolocation.io/static/flags/us_64.png",
+            "geoname_id": "6301403",
+            "country_emoji": "🇺🇸"
+        },
+        "country_metadata": {
+            "calling_code": "+1",
+            "tld": ".us",
+            "languages": ["en-US","es-US","haw","fr"]
+        },
+        "currency": {
+            "code": "USD",
+            "name": "US Dollar",
+            "symbol": "$"
+        }
+    }
 
+    // sample response (Standard API Subscription)
+    {
+        "ip": "8.8.8.8",
+        "hostname": "dns.google",
+        "location": {
+            "continent_code": "NA",
+            "continent_name": "North America",
+            "country_code2": "US",
+            "country_code3": "USA",
+            "country_name": "United States",
+            "country_name_official": "United States of America",
+            "country_capital": "Washington, D.C.",
+            "state_prov": "California",
+            "state_code": "US-CA",
+            "district": "Santa Clara",
+            "city": "Mountain View",
+            "zipcode": "94043-1351",
+            "latitude": "37.42240",
+            "longitude": "-122.08421",
+            "is_eu": false,
+            "country_flag": "https://ipgeolocation.io/static/flags/us_64.png",
+            "geoname_id": "6301403",
+            "country_emoji": "🇺🇸"
+        },
+        "country_metadata": {
+            "calling_code": "+1",
+            "tld": ".us",
+            "languages": ["en-US","es-US","haw","fr"]
+        },
+        "network": {
+            "asn": {
+                "as_number": "AS15169",
+                "organization": "Google LLC",
+                "country": "US"
+            },
+            "company": {
+                "name": "Google LLC"
+            }
+        },
         "currency": {
             "code": "USD",
             "name": "US Dollar",
@@ -247,228 +183,743 @@ You can filter the API response by specifying names of the fields that you want 
             "name": "America/Los_Angeles",
             "offset": -8,
             "offset_with_dst": -7,
-            "current_time": "2024-09-19 00:19:04.376-0700",
-            "current_time_unix": 1726730344.376,
+            "current_time": "2025-04-22 06:19:40.951-0700",
+            "current_time_unix": 1745327980.951,
             "is_dst": true,
             "dst_savings": 1,
             "dst_exists": true,
             "dst_start": {
-            "utc_time": "2024-03-10 TIME 10",
-            "duration": "+1H",
-            "gap": true,
-            "dateTimeAfter": "2024-03-10 TIME 03",
-            "dateTimeBefore": "2024-03-10 TIME 02",
-            "overlap": false
+                "utc_time": "2025-03-09 TIME 10",
+                "duration": "+1H",
+                "gap": true,
+                "date_time_after": "2025-03-09 TIME 03",
+                "date_time_before": "2025-03-09 TIME 02",
+                "overlap": false
             },
             "dst_end": {
-            "utc_time": "2024-11-03 TIME 09",
-            "duration": "-1H",
-            "gap": false,
-            "dateTimeAfter": "2024-11-03 TIME 01",
-            "dateTimeBefore": "2024-11-03 TIME 02",
-            "overlap": true
+                "utc_time": "2025-11-02 TIME 09",
+                "duration": "-1H",
+                "gap": false,
+                "date_time_after": "2025-11-02 TIME 01",
+                "date_time_before": "2025-11-02 TIME 02",
+                "overlap": true
+            }
+        },
+        "user_agent": {
+            "user_agent_string": "User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/601.3.9 (KHTML, like Gecko) Version/9.0.2 Safari/601.3.9",
+            "name": "Safari",
+            "type": "Browser",
+            "version": "9.0.2",
+            "version_major": "9",
+            "device": {
+                "name": "Apple Macintosh",
+                "type": "Desktop",
+                "brand": "Apple",
+                "cpu": "Intel"
+            },
+            "engine": {
+                "name": "AppleWebKit",
+                "type": "Browser",
+                "version": "601.3.9",
+                "version_major": "601"
+            },
+            "operating_system": {
+                "name": "Mac OS",
+                "type": "Desktop",
+                "version": "10.11.2",
+                "version_major": "10.11",
+                "build": "??"
             }
         }
     }
-</script>
-```
-### Example 3: Remove the Unnecessary Fields
-you can also filter the API response by specifying the names of fields (except IP address) that you want to remove from the API response. Here are a few examples to exclude the unnecessary fields
-``` javascript
-<script>
-    // Exclude Continent Code, Currency and, Time zone Objects
-    const ipGeoAPI = new IPGeolocationAPI({
-        apiKey: "YOUR_API_KEY",
-        excludes: "continent_code,currency,time_zone",
-    });
-    const resp = await ipGeoAPI.getGeolocation();
-    //sample response
+
+    // sample response (Advanced API Subscription)
     {
         "ip": "8.8.8.8",
-        "continent_name": "North America",
-        "country_code2": "US",
-        "country_code3": "USA",
-        "country_name": "United States",
-        "country_name_official": "United States of America",
-        "country_capital": "Washington, D.C.",
-        "state_prov": "California",
-        "state_code": "US-CA",
-        "district": "Santa Clara",
-        "city": "Mountain View",
-        "zipcode": "94043-1351",
-        "latitude": "37.42240",
-        "longitude": "-122.08421",
-        "is_eu": false,
-        "calling_code": "+1",
-        "country_tld": ".us",
-        "languages": "en-US,es-US,haw,fr",
-        "country_flag": "https://ipgeolocation.io/static/flags/us_64.png",
-        "geoname_id": "6301403",
-        "isp": "Google LLC",
-        "connection_type": "",
-        "organization": "Google LLC",
-        "country_emoji": "🇺🇸",
-        "asn": "AS15169"
-    }
-
-    // Get the Geo Field and Exclude Continent Information
-    const ipGeoAPI = new IPGeolocationAPI({
-        apiKey: "YOUR_API_KEY",
-        fields: "geo",
-        excludes: "continent_code,continent_name",
-    });
-    const resp = await ipGeoAPI.getGeolocation();
-    //sample response
-
-    {
-        "ip": "8.8.8.8",
-        "country_code2": "US",
-        "country_code3": "USA",
-        "country_name": "United States",
-        "country_name_official": "United States of America",
-        "state_prov": "California",
-        "state_code": "US-CA",
-        "district": "Santa Clara",
-        "city": "Mountain View",
-        "zipcode": "94043-1351",
-        "latitude": "37.42240",
-        "longitude": "-122.08421"
-    }
-
-
-</script>
-```
-### Example 4: IP-Security Information for an IP Address
-IP Geolocation API also provides `IP-Security` information on all the `paid subscriptions`, but doesn't respond it by default. To get `IP-Security` information along with the geolocation information, you must pass the `include:security` while initializing the `IPGeolocationAPI`.
-```javascript
-<script>
-    const ipGeoAPI = new IPGeolocationAPI({
-        apiKey: "YOUR_API_KEY",
-        fields: "geo",
-        excludes: "continent_code,continent_name",
-        include: "security"
-    });
-    const resp = await ipGeoAPI.getGeolocation();
-    //sample response
-    {
-        "ip": "8.8.8.8",
-        "country_code2": "US",
-        "country_code3": "USA",
-        "country_name": "United States",
-        "country_name_official": "United States of America",
-        "state_prov": "California",
-        "state_code": "US-CA",
-        "district": "Santa Clara",
-        "city": "Mountain View",
-        "zipcode": "94043-1351",
-        "latitude": "37.42240",
-        "longitude": "-122.08421",
-        "is_eu": false,
+        "hostname": "dns.google",
+        "location": {
+            "continent_code": "NA",
+            "continent_name": "North America",
+            "country_code2": "US",
+            "country_code3": "USA",
+            "country_name": "United States",
+            "country_name_official": "United States of America",
+            "country_capital": "Washington, D.C.",
+            "state_prov": "California",
+            "state_code": "US-CA",
+            "district": "Santa Clara",
+            "city": "Mountain View",
+            "locality": "Mountain View",
+            "accuracy_radius": "",
+            "dma_code": "807",
+            "zipcode": "94043-1351",
+            "latitude": "37.42240",
+            "longitude": "-122.08421",
+            "is_eu": false,
+            "country_flag": "https://ipgeolocation.io/static/flags/us_64.png",
+            "geoname_id": "6301403",
+            "country_emoji": "🇺🇸"
+        },
+        "country_metadata": {
+            "calling_code": "+1",
+            "tld": ".us",
+            "languages": ["en-US","es-US","haw","fr"]
+        },
+        "network": {
+            "asn": {
+                "as_number": "AS15169",
+                "organization": "Google LLC",
+                "country": "US",
+                "asn_name": "GOOGLE",
+                "type": "isp",
+                "domain": "about.google",
+                "date_allocated": "",
+                "allocation_status": "Assigned",
+                "num_of_ipv4_routes": "1099",
+                "num_of_ipv6_routes": "107",
+                "rir": "ARIN"
+            },
+            "connection_type": "wired",
+            "company": {
+                "name": "Google LLC",
+                "type": "hosting",
+                "domain": "google.com"
+            }
+        },
+        "currency": {
+            "code": "USD",
+            "name": "US Dollar",
+            "symbol": "$"
+        },
         "security": {
             "threat_score": 80,
             "is_tor": false,
             "is_proxy": true,
             "proxy_type": "VPN",
+            "proxy_provider": "",
             "is_anonymous": true,
             "is_known_attacker": true,
             "is_spam": false,
             "is_bot": false,
-            "is_cloud_provider": true
+            "is_cloud_provider": false,
+            "cloud_provider": ""
+        },
+        "abuse": {
+            "route": "8.8.8.0/24",
+            "country": "US",
+            "handle": "ABUSE5250-ARIN",
+            "name": "Abuse",
+            "organization": "Abuse",
+            "role": "abuse",
+            "kind": "group",
+            "address": "1600 Amphitheatre Parkway\nMountain View\nCA\n94043\nUnited States",
+            "emails": ["network-abuse@google.com"],
+            "phone_numbers": ["+1-650-253-0000"]
+        },
+        "time_zone": {
+            "name": "America/Los_Angeles",
+            "offset": -8,
+            "offset_with_dst": -7,
+            "current_time": "2025-04-22 04:56:55.430-0700",
+            "current_time_unix": 1745323015.43,
+            "is_dst": true,
+            "dst_savings": 1,
+            "dst_exists": true,
+            "dst_start": {
+                "utc_time": "2025-03-09 TIME 10",
+                "duration": "+1H",
+                "gap": true,
+                "date_time_after": "2025-03-09 TIME 03",
+                "date_time_before": "2025-03-09 TIME 02",
+                "overlap": false
+            },
+            "dst_end": {
+                "utc_time": "2025-11-02 TIME 09",
+                "duration": "-1H",
+                "gap": false,
+                "date_time_after": "2025-11-02 TIME 01",
+                "date_time_before": "2025-11-02 TIME 02",
+                "overlap": true
+            }
+        },
+        "user_agent": {
+            "user_agent_string": "User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/601.3.9 (KHTML, like Gecko) Version/9.0.2 Safari/601.3.9",
+            "name": "Safari",
+            "type": "Browser",
+            "version": "9.0.2",
+            "version_major": "9",
+            "device": {
+                "name": "Apple Macintosh",
+                "type": "Desktop",
+                "brand": "Apple",
+                "cpu": "Intel"
+            },
+            "engine": {
+                "name": "AppleWebKit",
+                "type": "Browser",
+                "version": "601.3.9",
+                "version_major": "601"
+            },
+            "operating_system": {
+                "name": "Mac OS",
+                "type": "Desktop",
+                "version": "10.11.2",
+                "version_major": "10.11",
+                "build": "??"
+            }
+        }
+    }
+
+   </scritp>
+```
+
+### Example 2: Get Only the required fields
+
+You can filter the API response by specifying names of the fields that you want instead of getting the full response. Here are a few examples to get only the required fields:
+
+```javascript
+<script>
+
+// to get the geolocation information only
+
+    const ipGeoAPI = new IPGeolocationAPI({
+        apiKey: "YOUR_API_KEY",
+        fields: "location",
+    });
+    const resp = await ipGeoAPI.getGeolocation();
+
+    // sample response (Free/Standard API Subscription)
+    {
+        "ip": "1.1.1.1",
+        "location": {
+            "continent_code": "OC",
+            "continent_name": "Oceania",
+            "country_code2": "AU",
+            "country_code3": "AUS",
+            "country_name": "Australia",
+            "country_name_official": "Commonwealth of Australia",
+            "country_capital": "Canberra",
+            "state_prov": "Queensland",
+            "state_code": "AU-QLD",
+            "district": "Brisbane",
+            "city": "South Brisbane",
+            "zipcode": "4101",
+            "latitude": "-27.47306",
+            "longitude": "153.01421",
+            "is_eu": false,
+            "country_flag": "https://ipgeolocation.io/static/flags/au_64.png",
+            "geoname_id": "10113228",
+            "country_emoji": "🇦🇺"
+        }
+    }
+
+    //sample response (Advanced API Subscription)
+    {
+        "ip": "1.1.1.1",
+        "location": {
+            "continent_code": "OC",
+            "continent_name": "Oceania",
+            "country_code2": "AU",
+            "country_code3": "AUS",
+            "country_name": "Australia",
+            "country_name_official": "Commonwealth of Australia",
+            "country_capital": "Canberra",
+            "state_prov": "Queensland",
+            "state_code": "AU-QLD",
+            "district": "Brisbane",
+            "city": "South Brisbane",
+            "locality": "South Brisbane",
+            "accuracy_radius": "",
+            "zipcode": "4101",
+            "latitude": "-27.47306",
+            "longitude": "153.01421",
+            "is_eu": false,
+            "country_flag": "https://ipgeolocation.io/static/flags/au_64.png",
+            "geoname_id": "10113228",
+            "country_emoji": "🇦🇺"
+        }
+    }
+
+    // you can also specify multiple fields separated by comma, for example to get the country and city information only
+
+        const ipGeoAPI = new IPGeolocationAPI({
+        apiKey: "YOUR_API_KEY",
+        fields: "location.country_name,location.city",
+    });
+    const resp = await ipGeoAPI.getGeolocation();
+
+    // sample response
+    {
+        "ip": "1.1.1.1",
+        "location": {
+            "country_name": "Australia",
+            "city": "South Brisbane"
+        }
+    }
+
+    // to get geolocation and currency information
+
+        const ipGeoAPI = new IPGeolocationAPI({
+        apiKey: "YOUR_API_KEY",
+        fields: "location,currency",
+    });
+
+    // fetch the geolocation infromation from the API and use it as you want
+    const resp = await ipGeoAPI.getGeolocation();
+
+    // sample response (Free/Standard API Subscription)
+    {
+        "ip": "8.8.8.8",
+        "location": {
+            "continent_code": "NA",
+            "continent_name": "North America",
+            "country_code2": "US",
+            "country_code3": "USA",
+            "country_name": "United States",
+            "country_name_official": "United States of America",
+            "country_capital": "Washington, D.C.",
+            "state_prov": "California",
+            "state_code": "US-CA",
+            "district": "Santa Clara",
+            "city": "Mountain View",
+            "zipcode": "94043-1351",
+            "latitude": "37.42240",
+            "longitude": "-122.08421",
+            "is_eu": false,
+            "country_flag": "https://ipgeolocation.io/static/flags/us_64.png",
+            "geoname_id": "6301403",
+            "country_emoji": "🇺🇸"
+        },
+        "currency": {
+            "code": "USD",
+            "name": "US Dollar",
+            "symbol": "$"
+        }
+    }
+
+    // sample response (Advanced API Subscription)
+    {
+        "ip": "8.8.8.8",
+         "location": {
+            "continent_code": "NA",
+            "continent_name": "North America",
+            "country_code2": "US",
+            "country_code3": "USA",
+            "country_name": "United States",
+            "country_name_official": "United States of America",
+            "country_capital": "Washington, D.C.",
+            "state_prov": "California",
+            "state_code": "US-CA",
+            "district": "Santa Clara",
+            "city": "Mountain View",
+            "locality": "Mountain View",
+            "accuracy_radius": "",
+            "dma_code": "807",
+            "zipcode": "94043-1351",
+            "latitude": "37.42240",
+            "longitude": "-122.08421",
+            "is_eu": false,
+            "country_flag": "https://ipgeolocation.io/static/flags/us_64.png",
+            "geoname_id": "6301403",
+            "country_emoji": "🇺🇸"
+        },
+        "currency": {
+            "code": "USD",
+            "name": "US Dollar",
+            "symbol": "$"
         }
     }
 </script>
 ```
 
-### Example 5: Hostname Lookup for an IP Address
-IPGeolocation API also provide `hostname` lookup for an IP address on all the `paid subscriptions`, but doesn't respond it by default. To get the `hostname` for an IP address, you can pass one of the three values `hostname`, `liveHostname`, `hostnameFallbackLive` as shown below.
+### Example 3: Remove the Unnecessary Fields
 
-```javascript 
+you can also filter the API response by specifying the names of fields (except IP address) that you want to remove from the API response. Here are a few examples to exclude the unnecessary fields
+
+```javascript
+<script>
+    // Exclude Continent Code, Currency and, network Objects
+    const ipGeoAPI = new IPGeolocationAPI({
+        apiKey: "YOUR_API_KEY",
+        excludes: "location.continent_code,currency,network",
+    });
+    const resp = await ipGeoAPI.getGeolocation();
+
+    //sample response (Free/Standard API Subscription)
+    {
+        "ip": "8.8.8.8",
+        "location": {
+            "continent_name": "North America",
+            "country_code2": "US",
+            "country_code3": "USA",
+            "country_name": "United States",
+            "country_name_official": "United States of America",
+            "country_capital": "Washington, D.C.",
+            "state_prov": "California",
+            "state_code": "US-CA",
+            "district": "Santa Clara",
+            "city": "Mountain View",
+            "zipcode": "94043-1351",
+            "latitude": "37.42240",
+            "longitude": "-122.08421",
+            "is_eu": false,
+            "country_flag": "https://ipgeolocation.io/static/flags/us_64.png",
+            "geoname_id": "6301403",
+            "country_emoji": "🇺🇸"
+        },
+         "country_metadata": {
+            "calling_code": "+1",
+            "tld": ".us",
+            "languages": ["en-US","es-US","haw","fr"]
+        }
+    }
+
+    // sample response (Advanced API Subscription)
+    {
+         "ip": "8.8.8.8",
+         "location": {
+            "continent_name": "North America",
+            "country_code2": "US",
+            "country_code3": "USA",
+            "country_name": "United States",
+            "country_name_official": "United States of America",
+            "country_capital": "Washington, D.C.",
+            "state_prov": "California",
+            "state_code": "US-CA",
+            "district": "Santa Clara",
+            "city": "Mountain View",
+            "locality": "Mountain View",
+            "accuracy_radius": "",
+            "zipcode": "94043-1351",
+            "latitude": "37.42240",
+            "longitude": "-122.08421",
+            "is_eu": false,
+            "country_flag": "https://ipgeolocation.io/static/flags/us_64.png",
+            "geoname_id": "6301403",
+            "country_emoji": "🇺🇸"
+        },
+          "country_metadata": {
+            "calling_code": "+1",
+            "tld": ".us",
+            "languages": [ "en-US", "es-US", "haw", "fr"]
+        }
+    }
+
+    // Get the location Fields and Exclude Continent Information
+    const ipGeoAPI = new IPGeolocationAPI({
+        apiKey: "YOUR_API_KEY",
+        fields: "location",
+        excludes: "location.continent_code,location.continent_name",
+    });
+    const resp = await ipGeoAPI.getGeolocation();
+   //sample response (Free/Standard API Subscription)
+    {
+        "ip": "8.8.8.8",
+        "location": {
+            "country_code2": "US",
+            "country_code3": "USA",
+            "country_name": "United States",
+            "country_name_official": "United States of America",
+            "country_capital": "Washington, D.C.",
+            "state_prov": "California",
+            "state_code": "US-CA",
+            "district": "Santa Clara",
+            "city": "Mountain View",
+            "zipcode": "94043-1351",
+            "latitude": "37.42240",
+            "longitude": "-122.08421",
+            "is_eu": false,
+            "country_flag": "https://ipgeolocation.io/static/flags/us_64.png",
+            "geoname_id": "6301403",
+            "country_emoji": "🇺🇸"
+        }
+    }
+
+    // sample response (Advanced API Subscription)
+    {
+         "ip": "8.8.8.8",
+         "location": {
+            "country_code2": "US",
+            "country_code3": "USA",
+            "country_name": "United States",
+            "country_name_official": "United States of America",
+            "country_capital": "Washington, D.C.",
+            "state_prov": "California",
+            "state_code": "US-CA",
+            "district": "Santa Clara",
+            "city": "Mountain View",
+            "locality": "Mountain View",
+            "accuracy_radius": "",
+            "zipcode": "94043-1351",
+            "latitude": "37.42240",
+            "longitude": "-122.08421",
+            "is_eu": false,
+            "country_flag": "https://ipgeolocation.io/static/flags/us_64.png",
+            "geoname_id": "6301403",
+            "country_emoji": "🇺🇸"
+        }
+    }
+
+
+</script>
+```
+
+### Example 4: IP-Security Information for an IP Address
+
+`IP-Security` information is only available in `Advanced API Subscriptions`, but doesn't respond it by default. To get `IP-Security` information along with the geolocation information, you must pass the `includeSecurity: true` while initializing the `IPGeolocationAPI`.
+
+```javascript
+<script>
+    const ipGeoAPI = new IPGeolocationAPI({
+        apiKey: "YOUR_API_KEY",
+        fields: "location",
+        excludes: "location.continent_code,location.continent_name",
+        includeSecurity: true
+    });
+    const resp = await ipGeoAPI.getGeolocation();
+    // sample response (Advanced API Subscription)
+
+    {
+        "ip": "8.8.8.8",
+        "location": {
+            "country_code2": "US",
+            "country_code3": "USA",
+            "country_name": "United States",
+            "country_name_official": "United States of America",
+            "country_capital": "Washington, D.C.",
+            "state_prov": "California",
+            "state_code": "US-CA",
+            "district": "Santa Clara",
+            "city": "Mountain View",
+            "locality": "Mountain View",
+            "accuracy_radius": "",
+            "zipcode": "94043-1351",
+            "latitude": "37.42240",
+            "longitude": "-122.08421",
+            "is_eu": false,
+            "country_flag": "https://ipgeolocation.io/static/flags/us_64.png",
+            "geoname_id": "6301403",
+            "country_emoji": "🇺🇸"
+        },
+        "security": {
+            "threat_score": 80,
+            "is_tor": false,
+            "is_proxy": true,
+            "proxy_type": "VPN",
+            "proxy_provider": "",
+            "is_anonymous": true,
+            "is_known_attacker": true,
+            "is_spam": false,
+            "is_bot": false,
+            "is_cloud_provider": false,
+            "cloud_provider": ""
+        }
+    }
+
+</script>
+```
+
+### Example 5: Hostname Lookup for an IP Address
+
+IPGeolocation API also provide `hostname` lookup for an IP address on all the `paid subscriptions`, but doesn't respond it by default. To get the `hostname` for an IP address, you can pass one of the three values `includeHostname:true`, `includeLiveHostname:true`, `includeHostnameFallbackLive:true` while initializing the `IPGeolocationAPI`.
+
+```javascript
 <script>
 
     const ipGeoAPI = new IPGeolocationAPI({
         apiKey: "YOUR_API_KEY",
-        fields: "geo",
-        excludes: "continent_code,continent_name",
-        include: "liveHostname"
+        fields: "location",
+        excludes: "location.continent_code,location.continent_name",
+        includeLiveHostname: true
     });
     const resp = await ipGeoAPI.getGeolocation();
-    //sample response
+    //sample response (Standard API Subscription)
+
     {
         "ip": "8.8.8.8",
         "hostname": "dns.google",
-        "country_code2": "US",
-        "country_code3": "USA",
-        "country_name": "United States",
-        "country_name_official": "United States of America",
-        "state_prov": "California",
-        "state_code": "US-CA",
-        "district": "Santa Clara",
-        "city": "Mountain View",
-        "zipcode": "94043-1351",
-        "latitude": "37.42240",
-        "longitude": "-122.08421",
-        "is_eu": false
+        "location": {
+            "country_code2": "US",
+            "country_code3": "USA",
+            "country_name": "United States",
+            "country_name_official": "United States of America",
+            "country_capital": "Washington, D.C.",
+            "state_prov": "California",
+            "state_code": "US-CA",
+            "district": "Santa Clara",
+            "city": "Mountain View",
+            "zipcode": "94043-1351",
+            "latitude": "37.42240",
+            "longitude": "-122.08421",
+            "is_eu": false,
+            "country_flag": "https://ipgeolocation.io/static/flags/us_64.png",
+            "geoname_id": "6301403",
+            "country_emoji": "🇺🇸"
+        }
+    }
+
+    // sample response (Advanced API Subscription)
+
+    {
+        "ip": "8.8.8.8",
+        "hostname": "dns.google",
+        "location": {
+            "country_code2": "US",
+            "country_code3": "USA",
+            "country_name": "United States",
+            "country_name_official": "United States of America",
+            "country_capital": "Washington, D.C.",
+            "state_prov": "California",
+            "state_code": "US-CA",
+            "district": "Santa Clara",
+            "city": "Mountain View",
+            "locality": "Mountain View",
+            "accuracy_radius": "",
+            "zipcode": "94043-1351",
+            "latitude": "37.42240",
+            "longitude": "-122.08421",
+            "is_eu": false,
+            "country_flag": "https://ipgeolocation.io/static/flags/us_64.png",
+            "geoname_id": "6301403",
+            "country_emoji": "🇺🇸"
+        }
     }
 </script>
 
 ```
 
-### Example : User-Agent Information for a Device
-IP Geolocation API also provides `User-Agent` information on all the `paid subscriptions`, but doesn't respond it by default. To get `User-Agent` information along with the geolocation information, you must pass the `include:useragent` while initializing the `IPGeolocationAPI`.
-```javascript 
+### Example 6 : User-Agent Information for a Device
+
+IP Geolocation API also provides `User-Agent` information on all the `paid subscriptions`, but doesn't respond it by default. To get `User-Agent` information along with the geolocation information, you must pass the `includeUserAgent: true` while initializing the `IPGeolocationAPI`.
+
+```javascript
 <script>
 
     const ipGeoAPI = new IPGeolocationAPI({
         apiKey: "YOUR_API_KEY",
-        fields: "geo",
-        excludes: "continent_code,continent_name",
-        include: "useragent"
+        fields: "location.country_code2,location.city",
+        includeUserAgent: true
     });
     const resp = await ipGeoAPI.getGeolocation();
-    //sample response
+    //sample response (Standard/Advanced API Subscription)
     {
         "ip": "8.8.8.8",
-        "country_code2": "US",
-        "country_code3": "USA",
-        "country_name": "United States",
-        "country_name_official": "United States of America",
-        "state_prov": "California",
-        "state_code": "US-CA",
-        "district": "Santa Clara",
-        "city": "Mountain View",
-        "zipcode": "94043-1351",
-        "latitude": "37.42240",
-        "longitude": "-122.08421",
-        "is_eu": false,
+        "location": {
+            "city": "Mountain View",
+            "country_code2": "US"
+        },
         "user_agent": {
-            "userAgentString": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
-            "name": "Chrome",
-            "type": "Browser",
-            "version": "128",
-            "versionMajor": "128",
+            "user_agent_string": "PostmanRuntime/7.43.3",
+            "name": "PostmanRuntime",
+            "type": "Robot",
+            "version": "7.43.3",
+            "version_major": "7",
             "device": {
-            "name": "Linux Desktop",
-            "type": "Desktop",
-            "brand": "Unknown",
-            "cpu": "Intel x86_64"
+                "name": "Postman Runtime",
+                "type": "Robot",
+                "brand": "Postman",
+                "cpu": "Unknown"
             },
             "engine": {
-            "name": "Blink",
-            "type": "Browser",
-            "version": "128",
-            "versionMajor": "128"
+                "name": "PostmanRuntime",
+                "type": "Robot",
+                "version": "7.43.3",
+                "version_major": "7"
             },
-            "operatingSystem": {
-            "name": "Linux",
-            "type": "Desktop",
-            "version": "??",
-            "versionMajor": "??"
+            "operating_system": {
+                "name": "Cloud",
+                "type": "Cloud",
+                "version": "??",
+                "version_major": "??",
+                "build": "??"
             }
         }
     }
 </script>
 
 ```
+
+### Example 7 : DMA Information for an IP Address
+
+If you want to get `DMA (Designated Market Area)` code, which is specifically used in the US for marketing and regional targeting, you can get through the IP Geolocation API on `Advanced API subscription`. To get `DMA Code` information along with the geolocation information, you must pass the `includeDma:true` while initializing the `IPGeolocationAPI`.
+
+```javascript
+<script>
+
+    const ipGeoAPI = new IPGeolocationAPI({
+        apiKey: "YOUR_API_KEY",
+        fields: "location",
+        includeDma: true
+    });
+    const resp = await ipGeoAPI.getGeolocation();
+    //sample response (Advanced API API Subscription)
+    {
+        "ip": "8.8.8.8",
+        "location": {
+            "continent_code": "NA",
+            "continent_name": "North America",
+            "country_code2": "US",
+            "country_code3": "USA",
+            "country_name": "United States",
+            "country_name_official": "United States of America",
+            "country_capital": "Washington, D.C.",
+            "state_prov": "California",
+            "state_code": "US-CA",
+            "district": "Santa Clara",
+            "city": "Mountain View",
+            "locality": "Mountain View",
+            "accuracy_radius": "",
+            "dma_code": "807",
+            "zipcode": "94043-1351",
+            "latitude": "37.42240",
+            "longitude": "-122.08421",
+            "is_eu": false,
+            "country_flag": "https://ipgeolocation.io/static/flags/us_64.png",
+            "geoname_id": "6301403",
+            "country_emoji": "🇺🇸"
+        }
+    }
+</script>
+
+```
+
+### Example 8 : Abuse Contact Information for an IP Address
+
+IP Geolocation API can also provide `abuse contact` information of an IP address on `Advanced API subscription`, but doesn't respond it by default. To get `abuse contact` information along with the geolocation information, you must pass the `includeAbuse:true` while initializing the `IPGeolocationAPI`.
+
+```javascript
+<script>
+
+    const ipGeoAPI = new IPGeolocationAPI({
+        apiKey: "YOUR_API_KEY",
+        fields: "location.city,location.country_name",
+        includeAbuse:true
+    });
+    const resp = await ipGeoAPI.getGeolocation();
+    //sample response (Advanced API Subscription)
+    {
+        "ip": "1.2.3.4",
+        "location": {
+            "city": "Brisbane",
+            "country_name": "Australia"
+        },
+        "abuse": {
+            "route": "1.2.3.0/24",
+            "country": "AU",
+            "handle": "IRT-APNICRANDNET-AU",
+            "name": "IRT-APNICRANDNET-AU",
+            "organization": "",
+            "role": "abuse",
+            "kind": "group",
+            "address": "PO Box 3646\nSouth Brisbane, QLD 4101\nAustralia",
+            "emails": ["helpdesk@apnic.net"],
+            "phone_numbers": ["+61-7-3858-3188","+61-7-3858-3199"]
+        }
+    }
+</script>
+
+```
+
 ## Error Handling
 
 Inspect the `status` field in the response to detect any errors. A missing `status` field typically indicates a successful request, while its presence signals an issue. For example, if you are using developer plan and are trying to query the security information for an ipAddress, you will encounter an error as shown below:
@@ -481,7 +932,7 @@ Inspect the `status` field in the response to detect any errors. A missing `stat
         });
 
     const resp = await ipGeoAPI.getGeolocation();
-      //sample error response
+    //sample error response
   {
     error_message: "IP-hostname lookup, IP-security lookup and user-agent parsing are not supported on your free subscription. These features are available to all paid subscriptions only"
     error_status: 401
