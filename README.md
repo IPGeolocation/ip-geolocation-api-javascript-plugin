@@ -54,11 +54,11 @@ To instantiate the `IPGeolocationAPI`, you can use the following configuration o
 
 - **includeTimeZone** (`optional:  boolean`): Includes information about the client’s IP time zone (Paid feature).
 
+- **includeAbuse** (`optional:  boolean`): Includes information about the abuse contacts information of client IP (Paid feature).
+
 - **includeDMACode** (`optional:  boolean`): Includes information about the client’s IP DMA Code (Paid feature).
 
 - **saveToSessionStorage** (`optional:  boolean`): Saves geolocation data to session storage for temporary use.
-
-- **saveToLocalStorage** (`optional:  boolean`): Saves geolocation data to local storage for long-term use.
 
 - **ttl** (`optional`): Valid for only saving data to local storage. Time-to-live for data stored in local storage, specified in hours (e.g., `3` for 3 hours). The default is 24 hours.
 
