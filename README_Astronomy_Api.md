@@ -32,7 +32,7 @@ To instantiate the `IPGeolocationAPI`, you can use the following configuration o
 - **location** (`optional: string`): Specify the location for which you want the astronomical information.
 - **coordinates (lat & long)** (`optional:string`): Specify the location coordinates for which you want the astronomical information.
 - **date** (`optional:String`): Specify the date for which you want the astronomical information. You can pass this along with other parameters (ipAddress, location, coordinates)
-- **lang** (`optional: string`): Language of the response. Default is `en`. Supported languages include: `ru`, `de`, `ja`, `fr`, `cn`, `es`, `cs`, `it`, `fa`, `ko`.
+- **lang** (`optional: string`): Language of the response. Default is `en`. Supported languages include: `ru`, `de`, `ja`, `fr`, `cn`, `es`, `cs`, `it`, `fa`, `ko`, `pt`, `ar`.
 
 - **saveToSessionStorage** (`optional:  boolean`): Saves geolocation data to session storage for temporary use.
 

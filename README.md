@@ -40,7 +40,7 @@ To instantiate the `IPGeolocationAPI`, you can use the following configuration o
 
 - **excludes** (`optional: string`): Comma-separated list of fields to exclude from the response.
 
-- **lang** (`optional: string`): Language of the response. The default is `en`. Supported languages include: `ru`, `de`, `ja`, `fr`, `cn`, `es`, `cs`, `it`, `fa`, `ko`, `pt`. Translations are only supported on paid accounts.
+- **lang** (`optional: string`): Language of the response. The default is `en`. Supported languages include: `ru`, `de`, `ja`, `fr`, `cn`, `es`, `cs`, `it`, `fa`, `ko`, `pt`, `ar`. Translations are only supported on paid accounts.
 
 - **includeHostname** (`optional:  boolean`): Includes hostname lookup from the IPGeolocation's IP-Hostname database (Paid feature).
 
