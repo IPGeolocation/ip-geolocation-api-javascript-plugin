@@ -33,7 +33,7 @@ Add the following `<script>` tag (usually within the `<head>` block of your page
 ```html
 <script
   language="JavaScript"
-  src="https://static.ipgeolocation.io/ipgeolocation-api-plugin.v3.0.2.js"
+  src="https://static.ipgeolocation.io/ipgeolocation-api-plugin.v3.0.3.js"
   type="text/javascript"
 ></script>
 ```
@@ -43,6 +43,8 @@ Add the following `<script>` tag (usually within the `<head>` block of your page
 ## IPGeolocationAPI
 
 ### Configurations
+
+By default, the plugin waits up to 2 minutes for an API response and accepts responses up to 16 MiB. If you need a different limit, set `timeoutMs` (milliseconds) or `maxResponseBytes` (bytes) when you create the client. The plugin stops at redirects.
 
 #### IPGeolocationAPI: Authentication & Input
 | Option      | Type   | Description                                                                                  |
@@ -1007,6 +1009,8 @@ If no `ipAddress` is provided, the API automatically detects and assesses the re
 ---
 
 ## Error Handling
+
+The plugin hides your API key when you print a client with `JSON.stringify()` or when an error message repeats it. You can still read the key from `client.apiKey`.
 
 When a request fails, the response object contains `error_status` and `error_message`. HTTP failures retain their status code, including when the response body is not JSON. Network failures and invalid successful-response bodies use `error_status: 0`. Check for `error_message` before accessing response data.
 
